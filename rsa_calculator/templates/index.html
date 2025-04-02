@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #333; }
+        textarea { width: 100%; height: 50px; }
+        .container { max-width: 600px; margin: auto; }
+        .box { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
+        button { padding: 8px 15px; margin-top: 10px; cursor: pointer; }
+        .info { font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>RSA Calculator</h2>
+
+    <!-- Key Generation -->
+    <div class="box">
+        <h3>Step 1: Generate RSA Keys</h3>
+        <p class="info">
+            Two prime numbers <b>p</b> and <b>q</b> are selected. Then mod <b>n</b> is calculated as <b>n = p × q</b>.
+            Then, <b>r(n) = (p-1) × (q-1)</b>. Next a public exponent is chosen, <b>e</b> such that <b>gcd(e, r(n)) = 1</b>, and
+            compute the private key <b>d</b>, which is the modular inverse of <b>e</b> mod <b>r(n)</b>.
+        </p>
+        <form method="POST">
+            <input type="hidden" name="action" value="generate">
+            <button type="submit">Generate Keys</button>
+        </form>
+        <p><strong>p:</strong> {{ p }}</p>
+        <p><strong>q:</strong> {{ q }}</p>
+        <p><strong>n:</strong> {{ n }}</p>
+        <p><strong>e:</strong> {{ e }}</p>
+        <p><strong>d:</strong> {{ d }}</p>
+    </div>
+
+    <!-- Encryption -->
+    <div class="box">
+        <h3>Step 2: Encrypt a Message</h3>
+        <p class="info">
+            Each character in the message is converted to a number (ASCII code) and encrypted using the formula:
+            <b>ciphertext = (plaintext<sup>e</sup>) mod n</b>.
+        </p>
+        <form method="POST">
+            <input type="hidden" name="action" value="encrypt">
+            <textarea name="message" placeholder="Enter message to encrypt">{{ plaintext }}</textarea>
+            <button type="submit">Encrypt</button>
+        </form>
+        <p><strong>Encrypted Message:</strong> {{ ciphertext }}</p>
+    </div>
+
+    <!-- Decryption -->
+    <div class="box">
+        <h3>Step 3: Decrypt a Message</h3>
+        <p class="info">
+            The encrypted numbers are decrypted using the private key <b>d</b> with the formula:
+            <b>plaintext = (ciphertext<sup>d</sup>) mod n</b>. This restores the original message.
+        </p>
+        <form method="POST">
+            <input type="hidden" name="action" value="decrypt">
+            <textarea name="ciphertext" placeholder="Enter ciphertext to decrypt">{{ ciphertext }}</textarea>
+            <button type="submit">Decrypt</button>
+        </form>
+        <p><strong>Decrypted Message:</strong> {{ decrypted }}</p>
+    </div>
+
+</div>
+
+</body>
+</html>
